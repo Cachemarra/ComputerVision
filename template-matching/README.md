@@ -13,6 +13,10 @@ In order to work we're going to do:
 
 In short, we will filter the result matrix obtained from `cv2.matchTemplate` function and then apply non-maxima suppression
 
+The notebook has a better explanation but only run on-code.
+Py file is not very detailed but can be used from terminal
+
+
 -----------------
 
 ## Español
