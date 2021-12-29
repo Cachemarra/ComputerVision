@@ -3,7 +3,7 @@
 ## Tabla de contenidos
 
 1. [English](#English)
-2. [Spanish](#Spanish)
+2. [Español](#Español)
 
 -------
 ## English
@@ -46,5 +46,5 @@ train_ocr.py will have the code to train the SudokuNet classifier.
 
 -------------
 
-## Spanish
+## Español
 
