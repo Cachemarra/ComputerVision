@@ -25,7 +25,7 @@ def find_puzzle(image, debug=False):
 
     # Adaptive thresholding to get the puzzle and then invert
     thresh = cv2.adaptiveThreshold(blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                                      cv2.THRESH_BINARY_INV, 11, 2)
+                                      cv2.THRESH_BINARY, 11, 2)
     thresh = cv2.bitwise_not(thresh)
 
     # Check if debug mode is on and if so, show the image
