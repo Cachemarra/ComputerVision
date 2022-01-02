@@ -14,8 +14,15 @@ log.basicConfig(level=log.INFO,
                 datefmt="%I:%M:%S %p")
 
 #%% Sudoku board finder
-def find_puzzle(image, debug=False):
+def find_puzzle(image, debug=False) -> (np.ndarray):
+    '''
+    :param image: Numpy Array. Representation of the image.
+    :param debug: Bool. Shows the images of the process and logs.
+    :return (puzzle, warped): Numpy Array. Representation of the puzzle and the warped image.
 
+    Function to extract the sudoku puzzle from the image. It returns
+    the puzzle as a numpy array.
+    '''
     if not debug:
         log.basicConfig(level=log.INFO)
     
@@ -76,6 +83,7 @@ def find_puzzle(image, debug=False):
     # If debug mode is on, show the warped image
     if debug:
         cv2.imshow("Puzzle Transformed", puzzle)
+        cv2.imshow("Warped", warped)
         cv2.waitKey(0)
 
     # Return the puzzle and the warped image
@@ -148,6 +156,8 @@ if __name__ == '__main__':
     image = cv2.imread('D:\Programacion\ComputerVision\sudoku-solver\sudoku_test.jpg.png')
 
     # Find the puzzle
-    find_puzzle(image, debug=True)
+    (puzzle, wraped) = find_puzzle(image, debug=True)
 
-    
+    # Extract the digits
+
+
