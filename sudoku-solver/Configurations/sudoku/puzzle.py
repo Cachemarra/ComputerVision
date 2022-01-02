@@ -79,7 +79,64 @@ def find_puzzle(image, debug=False):
         cv2.waitKey(0)
 
     # Return the puzzle and the warped image
-    return puzzle, warped
+    return (puzzle, warped)
+
+
+#%% Extract the digits from the puzzle
+def extract_digits(cell, debug=False):
+    """
+    :param cell: Numpy Array. Representation of the cell
+    :param debug: Bool. Shows the images of the process and logs.
+
+    This functions read a cell from the sudoku puzzle and extract the 
+    number in it. If there's no number, it returns a 0, else, return the number.
+    """
+    # Apply automatic thresholding (Otsu) to the cell and then clear any connected
+    # borders that touch the border of the cell
+    thresh = cv2.threshold(cell, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+    thresh = clear_border(thresh) # This function comes from skimage.segmentation package.
+
+    # If debug mode is on, show the image
+    if debug:
+        cv2.imshow("Cell Threshold", thresh)
+        cv2.waitKey(0)
+
+    # Find the contours in the thresholded image
+    cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    cnts = imutils.grab_contours(cnts)
+
+    # If there's no contour, is an empty cell, so, return 0.
+    if len(cnts) == 0:
+        return None
+    
+    # Else, find the largest contour in the cell and create a mask
+    # for the contour.
+    c = max(cnts, key=cv2.contourArea)
+    mask = np.zeros(thresh.shape, dtype="uint8") # empty mask
+    cv2.drawContours(mask, [c], -1, 255, -1)
+
+    # Compute the percentage of masked pixels relative to the total
+    # area of the image. I.e. how much of the cell is filled up with white pixels.
+    # We are looking for white digits.
+    (h, w) = thresh.shape
+    percentFilled = cv2.countNonZero(mask) / (w * h) # Number of Non-zero pixels / Total pixels
+
+    # If the percentage of masked pixels is less than 0.03, then there are noise and can ignore
+    # the contour.
+    if percentFilled < 0.03:
+        return None
+
+    # Apply the mask to the thresholded cell
+    digit = cv2.bitwise_and(thresh, thresh, mask=mask)
+
+    # Check if debug mode is on and if so, show the image
+    if debug:
+        cv2.imshow("Digit", digit)
+        cv2.waitKey(0)
+    
+    # Finally, return the digit
+    return digit
+
 
 
 #%% Debugging
@@ -93,3 +150,4 @@ if __name__ == '__main__':
     # Find the puzzle
     find_puzzle(image, debug=True)
 
+    
