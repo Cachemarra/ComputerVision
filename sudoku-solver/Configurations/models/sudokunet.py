@@ -24,24 +24,20 @@ class SudokuNet:
 
         # Model Building
         # First Block Conv2D -> Activation -> MaxPooling2D
-        model.add(Conv2D(32, (5, 5), padding='same', input_shape=inputShape))
-        model.add(Activation('relu'))
+        model.add(Conv2D(32, (5, 5), padding='same', input_shape=inputShape, activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
 
         # Second Block Conv2D -> Activation -> MaxPooling2D
-        model.add(Conv2D(32, (3, 3), padding='same'))
-        model.add(Activation('relu'))
+        model.add(Conv2D(32, (3, 3), padding='same', activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
 
         # Third Block Flatten -> Dense -> Activation -> Dropout
         model.add(Flatten())
-        model.add(Dense(64))
-        model.add(Activation('relu'))
+        model.add(Dense(128, activation='relu'))
         model.add(Dropout(0.5))
 
         # Fourth Block Dense -> Activation -> Dropout
-        model.add(Dense(64))
-        model.add(Activation('relu'))
+        model.add(Dense(64, activation='relu'))
         model.add(Dropout(0.5))
 
         # Fifth Block Dense -> Activation -> Classifier
@@ -53,6 +49,9 @@ class SudokuNet:
 
 
 
-
+if '__main__' == __name__:
+    # Test the SudokuNet class
+    model = SudokuNet.build()
+    print(model.summary())
 
 

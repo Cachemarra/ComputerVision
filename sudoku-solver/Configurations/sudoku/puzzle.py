@@ -85,8 +85,10 @@ def find_puzzle(image, debug=False) -> (np.ndarray):
         cv2.imshow("Puzzle Transformed", puzzle)
         cv2.imshow("Warped", warped)
         cv2.waitKey(0)
+        
 
     # Return the puzzle and the warped image
+    cv2.destroyAllWindows()
     return (puzzle, warped)
 
 
@@ -143,6 +145,7 @@ def extract_digits(cell, debug=False):
         cv2.waitKey(0)
     
     # Finally, return the digit
+    cv2.destroyAllWindows()
     return digit
 
 
@@ -156,8 +159,23 @@ if __name__ == '__main__':
     image = cv2.imread('D:\Programacion\ComputerVision\sudoku-solver\sudoku_test.jpg.png')
 
     # Find the puzzle
-    (puzzle, wraped) = find_puzzle(image, debug=True)
+    # (_, _) = find_puzzle(image, debug=True)
 
-    # Extract the digits
+    # Test extract the digits (OCR)
+    # We have images with digits, so, we can test the function.
+
+    import matplotlib.pyplot as plt
+    ax, fig = plt.subplots(3, 3, figsize=(10, 10))
+    
+    for i in range(1, 10):
+        cell = cv2.imread('../../cell_' + str(i) + '.png')
+        cell = cv2.cvtColor(cell, cv2.COLOR_BGR2GRAY)
+        cell = extract_digits(cell, debug=True)
+        
+        plt.subplot(3, 3, i)
+        plt.imshow(cell, cmap='gray')
+        plt.xticks([]), plt.yticks([])
+        plt.title('Cell ' + str(i))
 
 
+# %%
